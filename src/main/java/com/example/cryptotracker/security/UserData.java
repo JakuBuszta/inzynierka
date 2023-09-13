@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 public class UserData implements UserDetails {
+    private static final long serialVersionUID = 1L;
+
     private User user;
 
     public UserData(User user) {
@@ -46,5 +48,13 @@ public class UserData implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getCurrencySymbol(){
+        return user.getCurrencySymbol();
+    }
+
+    public void setCurrencySymbol(String currencySymbol) {
+        this.user.setCurrencySymbol(currencySymbol);
     }
 }

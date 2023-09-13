@@ -66,8 +66,8 @@ class SecurityConfig implements WebMvcConfigurer {
                 )
                 .logout(LogoutConfigurer::permitAll);
 
-        http.sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//        http.sessionManagement(session ->
+//                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.headers().frameOptions().sameOrigin();
 

@@ -22,7 +22,7 @@ public class UserDataService implements UserDetailsService {
         User userByEmail = userRepository.findUserByEmail(email);
 
         if(userByEmail != null){
-            return new UserData(userByEmail);
+            return userByEmail;
         }
 
         try {

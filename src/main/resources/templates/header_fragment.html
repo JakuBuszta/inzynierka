@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
+
+  <script src="https://kit.fontawesome.com/0cdd49373d.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -10,7 +12,7 @@
 <div th:fragment="header" th:remove="tag">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" th:href="@{/}" >CryptoTracker</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -37,12 +39,35 @@
           </li>
         </ul>
         <form class="d-flex">
-          <a class="btn btn-outline-success m-2" th:href="@{/login}">Log In</a>
-          <a class="btn btn-outline-success m-2" th:href="@{/register}">Register</a>
+
+          <div sec:authorize="isAuthenticated()">
+            <div class="nav-item dropdown d-flex">
+              <i style="font-size: 24px; margin-right: 10px;" class="fas">&#xf406;</i>
+              <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
+                 data-bs-toggle="dropdown" aria-expanded="false" sec:authentication="name">
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                <li><a th:href="@{/logout}" class="dropdown-item">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div sec:authorize="isAnonymous()">
+            <a class="btn btn-outline-success m-2" th:href="@{/login}">Log In</a>
+            <a class="btn btn-outline-success m-2" th:href="@{/register}">Register</a>
+          </div>
+
         </form>
       </div>
     </div>
   </nav>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script th:src="@{/js/common.js}"></script>
+  <script src="https://kit.fontawesome.com/0cdd49373d.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/0cdd49373d.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+          crossorigin="anonymous"></script>
 </div>
 
 
