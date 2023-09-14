@@ -1,5 +1,6 @@
 package com.example.cryptotracker.user;
 
+import com.example.cryptotracker.portfolio.Transaction;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -30,8 +31,6 @@ public class User implements UserDetails {
 
     @Column(length = 16, nullable = false)
     private String currencySymbol = "USD";
-
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,5 +1,6 @@
 package com.example.cryptotracker;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,14 +8,16 @@ import com.litesoftwares.coingecko.CoinGeckoApiClient;
 import com.litesoftwares.coingecko.constant.Currency;
 import com.litesoftwares.coingecko.domain.Coins.CoinMarkets;
 import com.litesoftwares.coingecko.impl.CoinGeckoApiClientImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @EnableScheduling
 @Component
+@RequiredArgsConstructor
 public class ApiCallScheduler {
-    CoinGeckoApiClient client = new CoinGeckoApiClientImpl();
+    public CoinGeckoApiClient client = new CoinGeckoApiClientImpl();
     List<CoinMarkets> coinMarketsUSD = new ArrayList<>();
     List<CoinMarkets> coinMarketsPLN = new ArrayList<>();
 
@@ -31,4 +34,23 @@ public class ApiCallScheduler {
     public List<CoinMarkets> getCoinMarketsPLN(){
         return coinMarketsPLN;
     }
+
+    public BigDecimal getPrice(String coinId, String currencySymbol) {
+        List<CoinMarkets> coinMarkets;
+
+        if (currencySymbol.equals("USD")){
+            coinMarkets = coinMarketsUSD;
+        }else {
+            coinMarkets = coinMarketsPLN;
+        }
+
+        for (CoinMarkets coin:
+                coinMarkets) {
+            if(coin.getId().equals(coinId)){
+                return coin.getCurrentPrice();
+            }
+        }
+        return BigDecimal.ZERO;
+    }
+
 }
