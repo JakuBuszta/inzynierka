@@ -35,6 +35,16 @@ public class ApiCallScheduler {
         return coinMarketsPLN;
     }
 
+    public String getImg(String coinId){
+        for (CoinMarkets coin:
+                coinMarketsUSD) {
+            if(coin.getId().equals(coinId)){
+                return coin.getImage();
+            }
+        }
+        return "";
+    }
+
     public BigDecimal getPrice(String coinId, String currencySymbol) {
         List<CoinMarkets> coinMarkets;
 

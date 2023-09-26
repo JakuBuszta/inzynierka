@@ -33,7 +33,7 @@
             <div>
                 <h5 class="cryptoInfo" id="totalSpent">$0</h5>
             </div>
-            <input class="homePageContainerButton" type="submit" th:value="#{label.submit}" />
+            <input class="homePageContainerButton" type="submit" value="Submit" />
             <input hidden name="coinId" th:value="${crypto.id}">
         </div>
     </form>
@@ -43,7 +43,7 @@
             var price = document.getElementById("price").value;
             var quantity = document.getElementById("quantity").value;
             var total = (price*quantity).toFixed(2);
-            document.getElementById("totalSpent").innerHTML = "[[${currencySymbol}]]"+total;
+            document.getElementById("totalSpent").innerHTML = "[[${currencySymbol}]]" + " " + total;
         }
     </script>
 </div>

@@ -16,6 +16,81 @@
 <div th:replace="header_fragment :: header"></div>
 
 
+<table class="table" style="margin: 20px; padding: 20px">
+    <thead>
+    <tr>
+        <th scope="col">CryptoCurrency</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Avg price</th>
+        <th scope="col">Value</th>
+        <th scope="col">%</th>
+    </tr>
+    </thead>
+    <tr th:each="crypto : ${list}">
+        <td>
+            <img th:src="${crypto.img}" alt="image" width=20 height="20" src=""/>
+            <a th:text="${crypto.coinId}"> coinId </a>
+        </td>
+
+        <td><a th:text="|${#numbers.formatDecimal(crypto.quantity, 1, 'COMMA', 2, 'POINT')}|" id="quantity"> Quantity </a></td>
+        <td><a th:text="|${currencySymbol}${#numbers.formatDecimal(crypto.pricePaid, 1, 'COMMA', 2, 'POINT')}|" id="price"> Price </a></td>
+
+        <td>
+            <div class="test" th:with="value=(${crypto.quantity} * ${crypto.currentValue})" th:text="|${currencySymbol}${#numbers.formatDecimal(value, 1, 'COMMA', 2, 'POINT')}|"></div>
+        </td>
+
+        <td>
+            <div style="display: inline-block">
+                <th:block th:if="${crypto.percentages >= 0}">
+                    <i class="fa-solid fa-caret-up" style="color:green; display: inline-block"></i>
+                    <div th:text="|${#numbers.formatDecimal(crypto.percentages, 1, 'COMMA', 2, 'POINT')}%|"
+                         style="color: green; display: inline-block">
+                    </div>
+                </th:block>
+
+                <th:block th:if="${crypto.percentages < 0}">
+                    <i class="fa-solid fa-caret-down" style="color:red; display: inline-block"></i>
+                    <div th:text="|${#numbers.formatDecimal(crypto.percentages * -1, 1, 'COMMA', 2, 'POINT')}%|"
+                         style="color: red; display: inline-block">
+                    </div>
+                </th:block>
+
+            </div>
+        </td>
+
+    </tr>
+</table>
+
+<table class="table" style="margin: 20px; padding: 20px">
+    <div th:switch="${percentagesOfTotalProfit &gt; 0}">
+        <td>
+            <div style="display: inline-block"><strong>Total Value:</strong></div>
+            <span class="portfolioCrypto" th:text="|${currencySymbol} ${#numbers.formatDecimal(totalValue, 1, 'COMMA', 2, 'POINT')}||"></span>
+        </td>
+
+        <td><div style="display: inline-block">
+            <th:block th:if="${percentagesOfTotalProfit >= 0}">
+                <div style="display: inline-block"><strong>Profit/Loss:</strong> &nbsp;</div>
+                <i class="fa-solid fa-caret-up" style="color:green; display: inline-block"></i>
+                <div th:text="|${#numbers.formatDecimal(percentagesOfTotalProfit, 1, 'COMMA', 2, 'POINT')}%|"
+                     style="color: green; display: inline-block">
+                </div>
+            </th:block>
+
+            <th:block th:if="${percentagesOfTotalProfit < 0}">
+                <div style="display: inline-block"><strong>Profit/Loss:</strong> &nbsp;</div>
+                <i class="fa-solid fa-caret-down" style="color:red; display: inline-block"></i>
+                <div th:text="|${#numbers.formatDecimal(crypto.percentages * -1, 1, 'COMMA', 2, 'POINT')}%|"
+                     style="color: red; display: inline-block">
+                </div>
+            </th:block>
+
+        </div></td>
+
+    </div>
+</table>
+
+<div th:replace="portfolio/add_crypto_modal :: modal"></div>
 
 </body>
 </html>
