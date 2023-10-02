@@ -3,21 +3,32 @@ package com.example.cryptotracker.portfolio;
 import com.example.cryptotracker.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 
-@Data
 @Entity
+@Data
 public class HistoricalData {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @CreationTimestamp
     private LocalDate placedAt;
+
+    public HistoricalData(User user, Double value, Double profitLoos) {
+        this.user = user;
+        this.dataValue = value;
+        this.profitLoss = profitLoos;
+    }
 
     @ManyToOne
 //    @JoinColumn(name = "user_id")
     private User user;
 
-    private Double value;
+    private Double dataValue;
     private Double profitLoss;
+
+    public HistoricalData() {}
 }

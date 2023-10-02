@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import java.util.List;
 public class PortfolioController {
     private final ApiCallScheduler apiCallScheduler;
     private final TransactionService transactionService;
+    private final HistoricalDataRepository historicalDataRepository;
 
     @GetMapping("/portfolio")
     private String viewPortfolioPage(Model model){
@@ -101,6 +103,20 @@ public class PortfolioController {
         }else if(requestUser.getCurrencySymbol().equals("PLN")){
             model.addAttribute("currencySymbol", "zł");
         }
+
+        List<HistoricalData> compressHistoricalData = historicalDataRepository.findByUser(requestUser);
+        if (compressHistoricalData.size() != 0){
+            if (compressHistoricalData.get(compressHistoricalData.size()-1).getPlacedAt().equals(LocalDate.now())){
+                compressHistoricalData.get(compressHistoricalData.size()-1).setDataValue(totalValue);
+                compressHistoricalData.get(compressHistoricalData.size()-1).setProfitLoss(profitLoss);
+            }else {
+                historicalDataRepository.save(new HistoricalData(requestUser, totalValue, profitLoss));
+            }
+        }else{
+            historicalDataRepository.save(new HistoricalData(requestUser, totalValue, profitLoss));
+        }
+
+        model.addAttribute("historicalData", historicalDataRepository.findByUser(requestUser));
 
         return "portfolio/portfolio";
     }

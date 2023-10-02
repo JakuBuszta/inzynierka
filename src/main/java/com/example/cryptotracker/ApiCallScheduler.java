@@ -1,13 +1,19 @@
 package com.example.cryptotracker;
 
+import java.beans.Transient;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.cryptotracker.portfolio.*;
+import com.example.cryptotracker.user.User;
+import com.example.cryptotracker.user.UserRepository;
 import com.litesoftwares.coingecko.CoinGeckoApiClient;
 import com.litesoftwares.coingecko.constant.Currency;
 import com.litesoftwares.coingecko.domain.Coins.CoinMarkets;
 import com.litesoftwares.coingecko.impl.CoinGeckoApiClientImpl;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +23,9 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ApiCallScheduler {
+    private final HistoricalDataRepository historicalDataRepository;
+    private final UserRepository userRepository;
+    private final TransactionRepository transactionRepository;
     public CoinGeckoApiClient client = new CoinGeckoApiClientImpl();
     List<CoinMarkets> coinMarketsUSD = new ArrayList<>();
     List<CoinMarkets> coinMarketsPLN = new ArrayList<>();
@@ -26,6 +35,83 @@ public class ApiCallScheduler {
         coinMarketsUSD = client.getCoinMarkets(Currency.USD);
         coinMarketsPLN = client.getCoinMarkets(Currency.PLN);
     }
+
+    @Scheduled(fixedRate = 5000)
+    @Transactional
+    public void saveHistoricalData(){
+        Iterable<User> users = userRepository.findAll();
+        for (User user:
+                users) {
+            List<Transaction> listOfTransaction = transactionRepository.findAllByUser(user);
+            List<Coin> listOfCoins = new ArrayList<>(listOfTransaction.size());
+
+            listOfCoins.add(new Coin());
+            if (listOfTransaction.size() > 0) {
+                listOfCoins.get(0).setCoinId(listOfTransaction.get(0).getCoinId());
+                listOfCoins.get(0).setQuantity(listOfTransaction.get(0).getQuantity());
+                listOfCoins.get(0).setPricePaid(listOfTransaction.get(0).getPrice());
+                listOfCoins.get(0).setImg(getImg(listOfCoins.get(0).getCoinId()));
+
+                boolean newCrypto;
+                for (int i = 1; i < listOfTransaction.size(); i++) {
+                    newCrypto = true;
+                    for (int j = 0; j < listOfCoins.size(); j++) {
+                        if (listOfCoins.get(j).getCoinId().equals(listOfTransaction.get(i).getCoinId())) {
+                            newCrypto = false;
+                            listOfCoins.get(j).setPricePaid((listOfCoins.get(j).getPricePaid() * listOfCoins.get(j).getQuantity()
+                                    + listOfTransaction.get(i).getPrice() * listOfTransaction.get(i).getQuantity())
+                                    / (listOfCoins.get(j).getQuantity() + listOfTransaction.get(i).getQuantity()));
+                            listOfCoins.get(j).setQuantity(listOfTransaction.get(i).getQuantity() + listOfCoins.get(j).getQuantity());
+                        }
+                        if (newCrypto && listOfCoins.size() - 1 == j) {
+                            listOfCoins.add(new Coin());
+                            listOfCoins.get(listOfCoins.size() - 1).setCoinId(listOfTransaction.get(i).getCoinId());
+                            listOfCoins.get(listOfCoins.size() - 1).setQuantity(listOfTransaction.get(i).getQuantity());
+                            listOfCoins.get(listOfCoins.size() - 1).setPricePaid(listOfTransaction.get(i).getPrice());
+                            listOfCoins.get(listOfCoins.size() - 1).setImg(getImg(listOfTransaction.get(i).getCoinId()));
+
+                            break;
+                        }
+                    }
+                }
+
+                double profitLoss = 0.0;
+                double cost = 0.0;
+                double totalValue = 0.0;
+
+                for (Coin listOfCoin : listOfCoins) {
+                    listOfCoin.setPercentages((Double.parseDouble(getPrice(listOfCoin.getCoinId(), user.getCurrencySymbol()).toString())
+                            - listOfCoin.getPricePaid()) / listOfCoin.getPricePaid() * 100);
+                    listOfCoin.setCurrentValue(Double.parseDouble(getPrice(listOfCoin.getCoinId(), user.getCurrencySymbol()).toString()));
+
+                    cost += listOfCoin.getPricePaid() * listOfCoin.getQuantity();
+                    totalValue += listOfCoin.getCurrentValue() * listOfCoin.getQuantity();
+                }
+
+                profitLoss = totalValue - cost;
+
+                List<HistoricalData> compressHistoricalData = historicalDataRepository.findByUser(user);
+                if (compressHistoricalData.size() != 0){
+                    if (compressHistoricalData.get(compressHistoricalData.size()-1).getPlacedAt().getDayOfYear() == (LocalDate.now().getDayOfYear())
+                    && compressHistoricalData.get(compressHistoricalData.size()-1).getPlacedAt().getYear() == (LocalDate.now().getYear())) {
+                        compressHistoricalData.get(compressHistoricalData.size()-1).setDataValue(totalValue);
+                        compressHistoricalData.get(compressHistoricalData.size()-1).setProfitLoss(profitLoss);
+                        System.out.println("1");
+                    }else {
+                        System.out.println("2");
+                        historicalDataRepository.save(new HistoricalData(user, totalValue, profitLoss));
+                    }
+                }else{
+                    System.out.println("3");
+                    historicalDataRepository.save(new HistoricalData(user, totalValue, profitLoss));
+                }
+
+
+            }
+        }
+    }
+
+
 
     public List<CoinMarkets> getCoinMarketsUSD(){
         return coinMarketsUSD;
