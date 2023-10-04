@@ -15,6 +15,16 @@
 <body>
 <div th:replace="header_fragment :: header"></div>
 
+<script th:inline="javascript">
+    var historicalData = [[${historicalData}]]
+</script>
+
+<div>
+    <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:src="@{/js/chartjs-custom.js}"></script>
 
 <table class="table" style="margin: 20px; padding: 20px">
     <thead>
@@ -32,11 +42,14 @@
             <a th:text="${crypto.coinId}"> coinId </a>
         </td>
 
-        <td><a th:text="|${#numbers.formatDecimal(crypto.quantity, 1, 'COMMA', 2, 'POINT')}|" id="quantity"> Quantity </a></td>
-        <td><a th:text="|${currencySymbol}${#numbers.formatDecimal(crypto.pricePaid, 1, 'COMMA', 2, 'POINT')}|" id="price"> Price </a></td>
+        <td><a th:text="|${#numbers.formatDecimal(crypto.quantity, 1, 'COMMA', 2, 'POINT')}|" id="quantity">
+            Quantity </a></td>
+        <td><a th:text="|${currencySymbol}${#numbers.formatDecimal(crypto.pricePaid, 1, 'COMMA', 2, 'POINT')}|"
+               id="price"> Price </a></td>
 
         <td>
-            <div class="test" th:with="value=(${crypto.quantity} * ${crypto.currentValue})" th:text="|${currencySymbol}${#numbers.formatDecimal(value, 1, 'COMMA', 2, 'POINT')}|"></div>
+            <div class="test" th:with="value=(${crypto.quantity} * ${crypto.currentValue})"
+                 th:text="|${currencySymbol}${#numbers.formatDecimal(value, 1, 'COMMA', 2, 'POINT')}|"></div>
         </td>
 
         <td>
@@ -61,36 +74,44 @@
     </tr>
 </table>
 
+
+
 <table class="table" style="margin: 20px; padding: 20px">
     <div th:switch="${percentagesOfTotalProfit &gt; 0}">
         <td>
             <div style="display: inline-block"><strong>Total Value:</strong></div>
-            <span class="portfolioCrypto" th:text="|${currencySymbol} ${#numbers.formatDecimal(totalValue, 1, 'COMMA', 2, 'POINT')}||"></span>
+            <span class="portfolioCrypto"
+                  th:text="|${currencySymbol} ${#numbers.formatDecimal(totalValue, 1, 'COMMA', 2, 'POINT')}||"></span>
         </td>
 
-        <td><div style="display: inline-block">
-            <th:block th:if="${percentagesOfTotalProfit >= 0}">
-                <div style="display: inline-block"><strong>Profit/Loss:</strong> &nbsp;</div>
-                <i class="fa-solid fa-caret-up" style="color:green; display: inline-block"></i>
-                <div th:text="|${#numbers.formatDecimal(percentagesOfTotalProfit, 1, 'COMMA', 2, 'POINT')}%|"
-                     style="color: green; display: inline-block">
-                </div>
-            </th:block>
+        <td>
+            <div style="display: inline-block">
+                <th:block th:if="${percentagesOfTotalProfit >= 0}">
+                    <div style="display: inline-block"><strong>Profit/Loss:</strong> &nbsp;</div>
+                    <i class="fa-solid fa-caret-up" style="color:green; display: inline-block"></i>
+                    <div th:text="|${#numbers.formatDecimal(percentagesOfTotalProfit, 1, 'COMMA', 2, 'POINT')}%|"
+                         style="color: green; display: inline-block">
+                    </div>
+                </th:block>
 
-            <th:block th:if="${percentagesOfTotalProfit < 0}">
-                <div style="display: inline-block"><strong>Profit/Loss:</strong> &nbsp;</div>
-                <i class="fa-solid fa-caret-down" style="color:red; display: inline-block"></i>
-                <div th:text="|${#numbers.formatDecimal(crypto.percentages * -1, 1, 'COMMA', 2, 'POINT')}%|"
-                     style="color: red; display: inline-block">
-                </div>
-            </th:block>
+                <th:block th:if="${percentagesOfTotalProfit < 0}">
+                    <div style="display: inline-block"><strong>Profit/Loss:</strong> &nbsp;</div>
+                    <i class="fa-solid fa-caret-down" style="color:red; display: inline-block"></i>
+                    <div th:text="|${#numbers.formatDecimal(crypto.percentages * -1, 1, 'COMMA', 2, 'POINT')}%|"
+                         style="color: red; display: inline-block">
+                    </div>
+                </th:block>
 
-        </div></td>
+            </div>
+        </td>
 
     </div>
 </table>
 
 <div th:replace="portfolio/add_crypto_modal :: modal"></div>
+
+
+<script th:src="@{/js/chartjs-custom.js}"></script>
 
 </body>
 </html>

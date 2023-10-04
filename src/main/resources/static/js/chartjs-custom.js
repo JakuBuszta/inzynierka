@@ -1,11 +1,9 @@
 const ctx = document.getElementById('myChart');
-
-var valueInTime = historicalData.map(x => x["value"].toFixed(2))
+var valueInTime = historicalData.map(x => x["dataValue"].toFixed(2))
 var valuePlacedAt = historicalData.map(x => x["placedAt"])
-var profitLoss = historicalData.map(x => x["profitLoss"].toFixed(2))
 
 
-console.log(historicalData);
+var profitLoss = historicalData.map(x => x["profitLoss"])
 
 console.log(valueInTime);
 
@@ -33,10 +31,19 @@ const myChart = new Chart(ctx, {
     },
 
     options: {
+        maintainAspectRatio: false,
         scales: {
             y: {
-                beginAtZero: false
-
+                stacked: true,
+                grid: {
+                    display: true,
+                    color: "rgba(255,99,132,0.2)"
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                }
             }
         }
     }
@@ -44,3 +51,4 @@ const myChart = new Chart(ctx, {
 
 
 //(70, 255, 77)
+
