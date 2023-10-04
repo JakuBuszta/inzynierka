@@ -1,8 +1,8 @@
 package com.example.cryptotracker.user;
 
 import com.example.cryptotracker.security.SecurityUtilis;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,11 +11,16 @@ public class UserService {
     private final UserRepository userRepository;
 
 
-    public String saveCurrency(String currencySymbol) {
+    public String saveCurrency(String currencySymbol, HttpSession session) {
         User requestUser = SecurityUtilis.getUserFromSecurityContext();
 
-        requestUser.setCurrencySymbol(currencySymbol);
-        userRepository.save(requestUser);
+        if (requestUser != null) {
+            requestUser.setCurrencySymbol(currencySymbol);
+            userRepository.save(requestUser);
+        } else {
+            System.out.println();
+            session.setAttribute("currencySymbol", currencySymbol);
+        }
 
         return currencySymbol;
     }

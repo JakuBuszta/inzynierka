@@ -8,26 +8,37 @@ import com.litesoftwares.coingecko.domain.Coins.CoinFullData;
 import com.litesoftwares.coingecko.domain.Coins.CoinList;
 import com.litesoftwares.coingecko.domain.Coins.CoinMarkets;
 import com.litesoftwares.coingecko.domain.Coins.CoinTickerById;
+import com.litesoftwares.coingecko.domain.Exchanges.ExchangeById;
+import com.litesoftwares.coingecko.domain.Exchanges.Exchanges;
+import com.litesoftwares.coingecko.domain.Exchanges.ExchangesList;
+import com.litesoftwares.coingecko.domain.Exchanges.ExchangesTickersById;
 import com.litesoftwares.coingecko.impl.CoinGeckoApiClientImpl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class CoinsExample {
     public static void main(String[] args) {
-        String OMGContract = "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07";
-        String platform = "ethereum";
-
-        CoinGeckoApiClient client = new CoinGeckoApiClientImpl();
-
-        List<CoinList> coinList = client.getCoinList();
-        System.out.println(coinList);
-
-        long totalCoins = coinList.size();
-        System.out.println(totalCoins);
-
-        List<CoinMarkets> coinMarkets = client.getCoinMarkets(Currency.USD);
-        System.out.println(coinMarkets);
-
+//        String OMGContract = "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07";
+//        String platform = "ethereum";
+//
+//        CoinGeckoApiClient client = new CoinGeckoApiClientImpl();
+//
+//        System.out.println(client.getGlobal().getData().getTotalMarketCap().get("pln"));
+//
+//        CoinFullData bitcoinInfo = client.getCoinById("ethereum");
+//        System.out.println(bitcoinInfo);
+        //        System.out.println(client.getGlobal().getData());
+//
+//        List<CoinList> coinList = client.getCoinList();
+//        System.out.println(coinList);
+//
+//        long totalCoins = coinList.size();
+//        System.out.println(totalCoins);
+//
+//        List<CoinMarkets> coinMarkets = client.getCoinMarkets(Currency.USD);
+//        System.out.println(coinMarkets);
+//
 //        CoinFullData bitcoinInfo = client.getCoinById("bitcoin");
 //        System.out.println(bitcoinInfo);
 //
@@ -52,5 +63,41 @@ public class CoinsExample {
 //
 //        List<List<String>> coinOHLC = client.getCoinOHLC("bitcoin", "usd", 1);
 //        System.out.println(coinOHLC);
+
+
+
+//        CoinGeckoApiClient client = new CoinGeckoApiClientImpl();
+//
+//        ExchangeById binance = client.getExchangesById("binance");
+//        System.out.println(binance.getTickers());
+
+
+
+//        String country = binance.getCountry();
+//        System.out.println(country);
+
+//        long startYear = binance.getYearEstablished();
+//        System.out.println(startYear);
+//
+//        String websiteUrl = binance.getUrl();
+//        System.out.println(websiteUrl);
+//
+//        String logoUrl = binance.getImage();
+//        System.out.println(logoUrl);
+//
+//        BigDecimal tradeVolume = binance.getTradeVolume24hBtc();
+//        System.out.println(tradeVolume);
+//
+//        ExchangesTickersById binanceTickers = client.getExchangesTickersById("binance");
+//        System.out.println(binanceTickers.getTickers());
+//
+//        List<Exchanges> exchanges = client.getExchanges();
+//        System.out.println(exchanges);
+//
+//        List<ExchangesList> exchangesList = client.getExchangesList();
+//        System.out.println(exchangesList);
+//
+//        long totalExchanges = exchangesList.size();
+//        System.out.println(totalExchanges);
     }
 }

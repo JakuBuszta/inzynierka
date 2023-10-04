@@ -1,5 +1,6 @@
 package com.example.cryptotracker.user;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +14,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/{currencySymbol}")
-    private ResponseEntity<String> changeCurrency(@PathVariable String currencySymbol){
-      return ResponseEntity.ok(userService.saveCurrency(currencySymbol));
+    private ResponseEntity<String> changeCurrency(@PathVariable String currencySymbol, HttpSession session){
+      return ResponseEntity.ok(userService.saveCurrency(currencySymbol.toLowerCase(), session));
     }
 }

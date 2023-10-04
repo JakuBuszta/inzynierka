@@ -1,6 +1,7 @@
 package com.example.cryptotracker.portfolio;
 
 import com.example.cryptotracker.ApiCallScheduler;
+import com.example.cryptotracker.common.CommonController;
 import com.example.cryptotracker.security.SecurityUtilis;
 import com.example.cryptotracker.user.User;
 import com.litesoftwares.coingecko.domain.Coins.CoinMarkets;
@@ -17,11 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequiredArgsConstructor
-public class PortfolioController {
+public class PortfolioController extends CommonController {
     private final ApiCallScheduler apiCallScheduler;
     private final TransactionService transactionService;
     private final HistoricalDataRepository historicalDataRepository;
+
+    public PortfolioController(ApiCallScheduler apiCallScheduler, ApiCallScheduler apiCallScheduler1, TransactionService transactionService, HistoricalDataRepository historicalDataRepository) {
+        super(apiCallScheduler);
+        this.apiCallScheduler = apiCallScheduler1;
+        this.transactionService = transactionService;
+        this.historicalDataRepository = historicalDataRepository;
+    }
 
     @GetMapping("/portfolio")
     private String viewPortfolioPage(Model model){
@@ -98,11 +105,11 @@ public class PortfolioController {
         model.addAttribute("totalValue", totalValue);
         model.addAttribute("percentagesOfTotalProfit", percentagesOfTotalProfit);
 
-        if(requestUser.getCurrencySymbol().equals("USD")){
-            model.addAttribute("currencySymbol", "$");
-        }else if(requestUser.getCurrencySymbol().equals("PLN")){
-            model.addAttribute("currencySymbol", "zł");
-        }
+//        if(requestUser.getCurrencySymbol().equals("USD")){
+//            model.addAttribute("currencySymbol", "$");
+//        }else if(requestUser.getCurrencySymbol().equals("PLN")){
+//            model.addAttribute("currencySymbol", "zł");
+//        }
 
         List<HistoricalData> compressHistoricalData = historicalDataRepository.findByUser(requestUser);
         if (compressHistoricalData.size() != 0){
@@ -130,11 +137,11 @@ public class PortfolioController {
         model.addAttribute("crypto", coin);
         model.addAttribute("currentPriceOfClickedCrypto",currentPriceOfClickedCrypto);
 
-        if(requestUser.getCurrencySymbol().equals("USD")){
-            model.addAttribute("currencySymbol", "$");
-        }else if(requestUser.getCurrencySymbol().equals("PLN")){
-            model.addAttribute("currencySymbol", "zł");
-        }
+//        if(requestUser.getCurrencySymbol().equals("USD")){
+//            model.addAttribute("currencySymbol", "$");
+//        }else if(requestUser.getCurrencySymbol().equals("PLN")){
+//            model.addAttribute("currencySymbol", "zł");
+//        }
 
         return "transaction";
     }

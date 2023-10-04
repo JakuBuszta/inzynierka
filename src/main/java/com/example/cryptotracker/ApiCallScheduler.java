@@ -1,6 +1,5 @@
 package com.example.cryptotracker;
 
-import java.beans.Transient;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @EnableScheduling
 @Component
@@ -30,17 +30,30 @@ public class ApiCallScheduler {
     List<CoinMarkets> coinMarketsUSD = new ArrayList<>();
     List<CoinMarkets> coinMarketsPLN = new ArrayList<>();
 
+    private Double totalMarketCapUSD;
+    private Double totalMarketCapPLN;
+
     @Scheduled(fixedRate = 60000) //60000 - 1 min 5000 - 1 sec
     public void reportCurrentTime() {
         coinMarketsUSD = client.getCoinMarkets(Currency.USD);
         coinMarketsPLN = client.getCoinMarkets(Currency.PLN);
+        totalMarketCapUSD = client.getGlobal().getData().getTotalMarketCap().get(Currency.USD);
+        totalMarketCapPLN = client.getGlobal().getData().getTotalMarketCap().get(Currency.PLN);
+    }
+
+    public BigDecimal getTotalMarketCap(String currency) {
+        if (currency.equals("usd")) {
+            return new BigDecimal(totalMarketCapUSD);
+        } else {
+            return new BigDecimal(totalMarketCapPLN);
+        }
     }
 
     @Scheduled(fixedRate = 5000)
     @Transactional
-    public void saveHistoricalData(){
+    public void saveHistoricalData() {
         Iterable<User> users = userRepository.findAll();
-        for (User user:
+        for (User user :
                 users) {
             List<Transaction> listOfTransaction = transactionRepository.findAllByUser(user);
             List<Coin> listOfCoins = new ArrayList<>(listOfTransaction.size());
@@ -91,17 +104,17 @@ public class ApiCallScheduler {
                 profitLoss = totalValue - cost;
 
                 List<HistoricalData> compressHistoricalData = historicalDataRepository.findByUser(user);
-                if (compressHistoricalData.size() != 0){
-                    if (compressHistoricalData.get(compressHistoricalData.size()-1).getPlacedAt().getDayOfYear() == (LocalDate.now().getDayOfYear())
-                    && compressHistoricalData.get(compressHistoricalData.size()-1).getPlacedAt().getYear() == (LocalDate.now().getYear())) {
-                        compressHistoricalData.get(compressHistoricalData.size()-1).setDataValue(totalValue);
-                        compressHistoricalData.get(compressHistoricalData.size()-1).setProfitLoss(profitLoss);
+                if (compressHistoricalData.size() != 0) {
+                    if (compressHistoricalData.get(compressHistoricalData.size() - 1).getPlacedAt().getDayOfYear() == (LocalDate.now().getDayOfYear())
+                            && compressHistoricalData.get(compressHistoricalData.size() - 1).getPlacedAt().getYear() == (LocalDate.now().getYear())) {
+                        compressHistoricalData.get(compressHistoricalData.size() - 1).setDataValue(totalValue);
+                        compressHistoricalData.get(compressHistoricalData.size() - 1).setProfitLoss(profitLoss);
                         System.out.println("1");
-                    }else {
+                    } else {
                         System.out.println("2");
                         historicalDataRepository.save(new HistoricalData(user, totalValue, profitLoss));
                     }
-                }else{
+                } else {
                     System.out.println("3");
                     historicalDataRepository.save(new HistoricalData(user, totalValue, profitLoss));
                 }
@@ -112,19 +125,18 @@ public class ApiCallScheduler {
     }
 
 
-
-    public List<CoinMarkets> getCoinMarketsUSD(){
+    public List<CoinMarkets> getCoinMarketsUSD() {
         return coinMarketsUSD;
     }
 
-    public List<CoinMarkets> getCoinMarketsPLN(){
+    public List<CoinMarkets> getCoinMarketsPLN() {
         return coinMarketsPLN;
     }
 
-    public String getImg(String coinId){
-        for (CoinMarkets coin:
+    public String getImg(String coinId) {
+        for (CoinMarkets coin :
                 coinMarketsUSD) {
-            if(coin.getId().equals(coinId)){
+            if (coin.getId().equals(coinId)) {
                 return coin.getImage();
             }
         }
@@ -134,15 +146,15 @@ public class ApiCallScheduler {
     public BigDecimal getPrice(String coinId, String currencySymbol) {
         List<CoinMarkets> coinMarkets;
 
-        if (currencySymbol.equals("USD")){
+        if (currencySymbol.equals("USD")) {
             coinMarkets = coinMarketsUSD;
-        }else {
+        } else {
             coinMarkets = coinMarketsPLN;
         }
 
-        for (CoinMarkets coin:
+        for (CoinMarkets coin :
                 coinMarkets) {
-            if(coin.getId().equals(coinId)){
+            if (coin.getId().equals(coinId)) {
                 return coin.getCurrentPrice();
             }
         }

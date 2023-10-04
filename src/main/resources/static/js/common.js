@@ -25,7 +25,7 @@ function saveCurrency(currency) {
 
 
 
-    window.location.href = '/' + currency;
+    window.location.href = '/';
 }
 
 

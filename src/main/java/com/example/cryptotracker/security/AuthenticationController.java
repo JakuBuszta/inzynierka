@@ -1,5 +1,7 @@
 package com.example.cryptotracker.security;
 
+import com.example.cryptotracker.ApiCallScheduler;
+import com.example.cryptotracker.common.CommonController;
 import com.example.cryptotracker.user.User;
 import com.example.cryptotracker.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +15,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequiredArgsConstructor
-public class AuthenticationController {
+public class AuthenticationController extends CommonController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+
+    public AuthenticationController(ApiCallScheduler apiCallScheduler, PasswordEncoder passwordEncoder, UserRepository userRepository) {
+        super(apiCallScheduler);
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+    }
 
     @GetMapping("/login")
     public String viewLoginPage(){
