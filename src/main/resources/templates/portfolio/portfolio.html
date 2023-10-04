@@ -88,6 +88,10 @@
             <div style="display: inline-block">
                 <th:block th:if="${percentagesOfTotalProfit >= 0}">
                     <div style="display: inline-block"><strong>Profit/Loss:</strong> &nbsp;</div>
+                    <div th:text="|${currencySymbol} ${#numbers.formatDecimal(profitLoss, 1, 'COMMA', 2, 'POINT')}|"
+                         style="display: inline-block">
+                    </div>
+                    &nbsp;
                     <i class="fa-solid fa-caret-up" style="color:green; display: inline-block"></i>
                     <div th:text="|${#numbers.formatDecimal(percentagesOfTotalProfit, 1, 'COMMA', 2, 'POINT')}%|"
                          style="color: green; display: inline-block">
@@ -96,8 +100,12 @@
 
                 <th:block th:if="${percentagesOfTotalProfit < 0}">
                     <div style="display: inline-block"><strong>Profit/Loss:</strong> &nbsp;</div>
+                    <div th:text="|${currencySymbol} ${#numbers.formatDecimal(profitLoss, 1, 'COMMA', 2, 'POINT')}|"
+                         style="display: inline-block">
+                    </div>
+                    &nbsp;
                     <i class="fa-solid fa-caret-down" style="color:red; display: inline-block"></i>
-                    <div th:text="|${#numbers.formatDecimal(crypto.percentages * -1, 1, 'COMMA', 2, 'POINT')}%|"
+                    <div th:text="|${#numbers.formatDecimal(percentagesOfTotalProfit, 1, 'COMMA', 2, 'POINT')}%|"
                          style="color: red; display: inline-block">
                     </div>
                 </th:block>
