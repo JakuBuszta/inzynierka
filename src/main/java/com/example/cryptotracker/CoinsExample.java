@@ -12,6 +12,7 @@ import com.litesoftwares.coingecko.domain.Exchanges.ExchangeById;
 import com.litesoftwares.coingecko.domain.Exchanges.Exchanges;
 import com.litesoftwares.coingecko.domain.Exchanges.ExchangesList;
 import com.litesoftwares.coingecko.domain.Exchanges.ExchangesTickersById;
+import com.litesoftwares.coingecko.domain.Shared.Ticker;
 import com.litesoftwares.coingecko.impl.CoinGeckoApiClientImpl;
 
 import java.math.BigDecimal;
@@ -66,16 +67,36 @@ public class CoinsExample {
 
 
 
-//        CoinGeckoApiClient client = new CoinGeckoApiClientImpl();
-//
-//        ExchangeById binance = client.getExchangesById("binance");
-//        System.out.println(binance.getTickers());
+        CoinGeckoApiClient client = new CoinGeckoApiClientImpl();
+
+        ExchangeById binance = client.getExchangesById("binance");
+//        ExchangeById kraken = client.getExchangesById("kraken");
+//        ExchangeById crypto_com = client.getExchangesById("crypto_com");
+//        ExchangeById kucoin = client.getExchangesById("kucoin");
+//        ExchangeById bybit_spot = client.getExchangesById("bybit_spot");
+//        ExchangeById okex = client.getExchangesById("okex");
+//        ExchangeById bingx = client.getExchangesById("bingx");
 
 
+        List<Ticker> binanceBTC = binance.getTickers().stream()
+                .filter(ticker -> ticker.getBase().equals("BTC") && ticker.getTarget().equals("USDT")).toList();
+
+
+        System.out.println("getTickers: ---------------");
+        System.out.println(binance.getTickers());
+
+        System.out.println("binanceBTC: ---------------");
+        System.out.println(binanceBTC);
+        System.out.println("BINANCE: ---------------");
+        System.out.println(binance.getName());
+        System.out.println(binanceBTC.get(0).getMarket().getName());
+        System.out.println(binance.getName() == binanceBTC.get(0).getMarket().getName());
+        System.out.println(binance.getName().equals(binanceBTC.get(0).getMarket().getName()));
+        System.out.println(binanceBTC.get(0).getMarket().getIdentifier());
 
 //        String country = binance.getCountry();
 //        System.out.println(country);
-
+//
 //        long startYear = binance.getYearEstablished();
 //        System.out.println(startYear);
 //

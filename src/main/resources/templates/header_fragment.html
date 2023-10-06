@@ -29,6 +29,12 @@
             </ul>
           </li>
           <li class="nav-item">
+            <a class="nav-link" th:href="@{/arbitrage}" role="button" aria-expanded="false">
+              Arbitrage
+            </a>
+          </li>
+
+          <li class="nav-item">
             <span class="nav-link" th:text="|Market Cap: ${currencySymbol} ${#numbers.formatDecimal(totalMarketCapValue, 1, 'COMMA', 0, 'POINT')}|"></span>
           </li>
         </ul>

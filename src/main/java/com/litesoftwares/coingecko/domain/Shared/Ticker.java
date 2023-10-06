@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import lombok.*;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
 import java.util.Map;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Ticker {
+public class Ticker implements Comparable<Ticker> {
     @JsonProperty("base")
     private String base;
     @JsonProperty("target")
@@ -43,4 +45,8 @@ public class Ticker {
     @JsonProperty("coin_id")
     private String coinId;
 
+    @Override
+    public int compareTo(@NotNull Ticker ticker) {
+        return this.last.compareTo(ticker.last);
+    }
 }

@@ -11,13 +11,13 @@ import com.example.cryptotracker.user.UserRepository;
 import com.litesoftwares.coingecko.CoinGeckoApiClient;
 import com.litesoftwares.coingecko.constant.Currency;
 import com.litesoftwares.coingecko.domain.Coins.CoinMarkets;
+import com.litesoftwares.coingecko.domain.Exchanges.ExchangeById;
 import com.litesoftwares.coingecko.impl.CoinGeckoApiClientImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 @EnableScheduling
 @Component
@@ -30,15 +30,30 @@ public class ApiCallScheduler {
     List<CoinMarkets> coinMarketsUSD = new ArrayList<>();
     List<CoinMarkets> coinMarketsPLN = new ArrayList<>();
 
+    ExchangeById binance = new ExchangeById();
+    ExchangeById kraken = new ExchangeById();
+    ExchangeById crypto_com = new ExchangeById();
+    ExchangeById kucoin = new ExchangeById();
+    ExchangeById bybit_spot = new ExchangeById();
+    ExchangeById okex = new ExchangeById();
+    ExchangeById bingx = new ExchangeById();
     private Double totalMarketCapUSD;
     private Double totalMarketCapPLN;
 
-    @Scheduled(fixedRate = 60000) //60000 - 1 min 5000 - 1 sec
+    @Scheduled(fixedRate = 120000) //60000 - 1 min 5000 - 1 sec
     public void reportCurrentTime() {
         coinMarketsUSD = client.getCoinMarkets(Currency.USD);
         coinMarketsPLN = client.getCoinMarkets(Currency.PLN);
         totalMarketCapUSD = client.getGlobal().getData().getTotalMarketCap().get(Currency.USD);
         totalMarketCapPLN = client.getGlobal().getData().getTotalMarketCap().get(Currency.PLN);
+
+        binance = client.getExchangesById("binance");
+        kraken = client.getExchangesById("kraken");
+        crypto_com = client.getExchangesById("crypto_com");
+        kucoin = client.getExchangesById("kucoin");
+        bybit_spot = client.getExchangesById("bybit_spot");
+        okex = client.getExchangesById("okex");
+        bingx = client.getExchangesById("bingx");
     }
 
     public BigDecimal getTotalMarketCap(String currency) {
@@ -47,6 +62,21 @@ public class ApiCallScheduler {
         } else {
             return new BigDecimal(totalMarketCapPLN);
         }
+    }
+
+
+    public List<ExchangeById> getExchanges() {
+        List<ExchangeById> exchangeList = new ArrayList<>();
+
+        exchangeList.add(binance);
+        exchangeList.add(bingx);
+        exchangeList.add(kucoin);
+        exchangeList.add(kraken);
+        exchangeList.add(bybit_spot);
+        exchangeList.add(crypto_com);
+        exchangeList.add(okex);
+
+        return exchangeList;
     }
 
     @Scheduled(fixedRate = 5000)
