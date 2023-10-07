@@ -79,7 +79,7 @@ public class ApiCallScheduler {
         return exchangeList;
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 300000)
     @Transactional
     public void saveHistoricalData() {
         Iterable<User> users = userRepository.findAll();
