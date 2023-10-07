@@ -24,7 +24,6 @@ public class HistoricalData {
     }
 
     @ManyToOne
-//    @JoinColumn(name = "user_id")
     private User user;
 
     private Double dataValue;

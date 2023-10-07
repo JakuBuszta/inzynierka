@@ -123,9 +123,9 @@ public class ApiCallScheduler {
                 double totalValue = 0.0;
 
                 for (Coin listOfCoin : listOfCoins) {
-                    listOfCoin.setPercentages((Double.parseDouble(getPrice(listOfCoin.getCoinId(), user.getCurrencySymbol()).toString())
+                    listOfCoin.setPercentages((Double.parseDouble(getPrice(listOfCoin.getCoinId()).toString())
                             - listOfCoin.getPricePaid()) / listOfCoin.getPricePaid() * 100);
-                    listOfCoin.setCurrentValue(Double.parseDouble(getPrice(listOfCoin.getCoinId(), user.getCurrencySymbol()).toString()));
+                    listOfCoin.setCurrentValue(Double.parseDouble(getPrice(listOfCoin.getCoinId()).toString()));
 
                     cost += listOfCoin.getPricePaid() * listOfCoin.getQuantity();
                     totalValue += listOfCoin.getCurrentValue() * listOfCoin.getQuantity();
@@ -173,14 +173,11 @@ public class ApiCallScheduler {
         return "";
     }
 
-    public BigDecimal getPrice(String coinId, String currencySymbol) {
+    public BigDecimal getPrice(String coinId) {
         List<CoinMarkets> coinMarkets;
 
-        if (currencySymbol.equals("USD")) {
-            coinMarkets = coinMarketsUSD;
-        } else {
-            coinMarkets = coinMarketsPLN;
-        }
+        coinMarkets = coinMarketsUSD;
+
 
         for (CoinMarkets coin :
                 coinMarkets) {

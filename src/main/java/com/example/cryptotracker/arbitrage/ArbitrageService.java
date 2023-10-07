@@ -33,10 +33,6 @@ public class ArbitrageService {
 
 
         return allTickers;
-//        List<Ticker> binanceBTC = binance.getTickers().stream()
-//                .filter(ticker -> ticker.getBase().equals("BTC") && ticker.getTarget().equals("USDT")).toList();
-
-
     }
 
 }

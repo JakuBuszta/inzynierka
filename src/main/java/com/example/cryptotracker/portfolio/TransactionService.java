@@ -23,4 +23,9 @@ public class TransactionService {
         User requestUser = SecurityUtilis.getUserFromSecurityContext();
         return transactionRepository.findAllByUser(requestUser);
     }
+
+    public void deleteById(Integer transactionId) {
+        transactionRepository.deleteById(transactionId);
+
+    }
 }

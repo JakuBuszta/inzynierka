@@ -22,35 +22,10 @@ public class HomeController extends CommonController {
     }
 
     @GetMapping("/")
-    private String defaultHome(Model model, HttpSession session){
-        User requestUser = SecurityUtilis.getUserFromSecurityContext();
+    private String home(Model model){
 
-        String currencySymbol = (String) session.getAttribute("currencySymbol");
-        System.out.println(currencySymbol);
-        if (requestUser == null){
-            if (currencySymbol == null){
-                return home("usd", model);
-            }
-            return home(currencySymbol, model);
-        }
-
-        return home(requestUser.getCurrencySymbol(), model);
-    }
-
-    @GetMapping("/{symbol}")
-    private String home(@PathVariable String symbol, Model model){
-
-        if(symbol.equals("usd")){
-            List<CoinMarkets> coinMarkets = apiCallScheduler.getCoinMarketsUSD();
-            model.addAttribute("coinMarkets", coinMarkets);
-//            model.addAttribute("currencySymbol", "$");
-//            model.addAttribute("totalMarketCapValue", apiCallScheduler.getTotalMarketCap("usd"));
-        } else {
-            List<CoinMarkets> coinMarkets = apiCallScheduler.getCoinMarketsPLN();
-            model.addAttribute("coinMarkets", coinMarkets);
-//            model.addAttribute("currencySymbol", "zł");
-//            model.addAttribute("totalMarketCapValue", apiCallScheduler.getTotalMarketCap("pln"));
-        }
+        List<CoinMarkets> coinMarkets = apiCallScheduler.getCoinMarketsUSD();
+        model.addAttribute("coinMarkets", coinMarkets);
 
         return "home";
     }
