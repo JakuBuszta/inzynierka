@@ -139,13 +139,10 @@ public class ApiCallScheduler {
                             && compressHistoricalData.get(compressHistoricalData.size() - 1).getPlacedAt().getYear() == (LocalDate.now().getYear())) {
                         compressHistoricalData.get(compressHistoricalData.size() - 1).setDataValue(totalValue);
                         compressHistoricalData.get(compressHistoricalData.size() - 1).setProfitLoss(profitLoss);
-                        System.out.println("1");
                     } else {
-                        System.out.println("2");
                         historicalDataRepository.save(new HistoricalData(user, totalValue, profitLoss));
                     }
                 } else {
-                    System.out.println("3");
                     historicalDataRepository.save(new HistoricalData(user, totalValue, profitLoss));
                 }
 
@@ -159,9 +156,6 @@ public class ApiCallScheduler {
         return coinMarketsUSD;
     }
 
-    public List<CoinMarkets> getCoinMarketsPLN() {
-        return coinMarketsPLN;
-    }
 
     public String getImg(String coinId) {
         for (CoinMarkets coin :

@@ -1,21 +1,10 @@
 package com.example.cryptotracker;
 
 import com.litesoftwares.coingecko.CoinGeckoApiClient;
-import com.litesoftwares.coingecko.constant.Currency;
-import com.litesoftwares.coingecko.domain.Coins.CoinData.DeveloperData;
-import com.litesoftwares.coingecko.domain.Coins.CoinData.IcoData;
-import com.litesoftwares.coingecko.domain.Coins.CoinFullData;
-import com.litesoftwares.coingecko.domain.Coins.CoinList;
-import com.litesoftwares.coingecko.domain.Coins.CoinMarkets;
-import com.litesoftwares.coingecko.domain.Coins.CoinTickerById;
 import com.litesoftwares.coingecko.domain.Exchanges.ExchangeById;
-import com.litesoftwares.coingecko.domain.Exchanges.Exchanges;
-import com.litesoftwares.coingecko.domain.Exchanges.ExchangesList;
-import com.litesoftwares.coingecko.domain.Exchanges.ExchangesTickersById;
 import com.litesoftwares.coingecko.domain.Shared.Ticker;
 import com.litesoftwares.coingecko.impl.CoinGeckoApiClientImpl;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class CoinsExample {

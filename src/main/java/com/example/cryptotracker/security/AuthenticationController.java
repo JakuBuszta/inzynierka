@@ -4,7 +4,6 @@ import com.example.cryptotracker.ApiCallScheduler;
 import com.example.cryptotracker.common.CommonController;
 import com.example.cryptotracker.user.User;
 import com.example.cryptotracker.user.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

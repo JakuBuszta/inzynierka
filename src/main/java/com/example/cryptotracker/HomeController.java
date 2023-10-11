@@ -1,11 +1,7 @@
 package com.example.cryptotracker;
 
 import com.example.cryptotracker.common.CommonController;
-import com.example.cryptotracker.security.SecurityUtilis;
-import com.example.cryptotracker.user.User;
 import com.litesoftwares.coingecko.domain.Coins.CoinMarkets;
-import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

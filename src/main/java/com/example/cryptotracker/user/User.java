@@ -1,6 +1,5 @@
 package com.example.cryptotracker.user;
 
-import com.example.cryptotracker.portfolio.Transaction;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
