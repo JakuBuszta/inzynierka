@@ -34,19 +34,39 @@ const myChart = new Chart(ctx, {
         maintainAspectRatio: false,
         scales: {
             y: {
-                stacked: true,
-                grid: {
-                    display: true,
-                    color: "rgba(255,99,132,0.2)"
-                }
+                type: 'linear',
+                display: true,
+                position: 'left',
             },
             x: {
-                grid: {
-                    display: false
-                }
+                display: true
             }
         }
     }
+
+    // options: {
+    //     responsive: true,
+    //     interaction: {
+    //         mode: 'index',
+    //         intersect: false,
+    //     },
+    //     stacked: false,
+    //     scales: {
+    //         y: {
+    //             type: 'linear',
+    //             display: true,
+    //             position: 'left',
+    //         },
+    //         y1: {
+    //             type: 'linear',
+    //             display: false,
+    //             position: 'right',
+    //             grid: {
+    //                 drawOnChartArea: false,
+    //             },
+    //         },
+    //     }
+    // },
 });
 
 
@@ -82,16 +102,19 @@ document.addEventListener("DOMContentLoaded", function() {
                     // Otrzymane dane znajdują się w zmiennej "data"
 
                     var ctx = document.getElementById("chart-" + cryptoId);
-                    var valueInTime = data.map(x => x["dataValue"].toFixed(2))
+                    var valueInTime = data.map(x => x["dataValue"])
                     var valuePlacedAt = data.map(x => x["placedAt"])
                     var profitLoss = data.map(x => x["profitLoss"])
+
+                    console.log("profitLoss: " + profitLoss.data)
+                    console.log("valueInTime: " + valueInTime.data)
 
                     new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: valuePlacedAt,
                             datasets: [{
-                                label: 'Portfolio value',
+                                label: 'Value (' + cryptoId + ')',
                                 data: valueInTime,
                                 borderColor: [
                                     'rgba(0, 156, 255, 1)'
@@ -108,27 +131,41 @@ document.addEventListener("DOMContentLoaded", function() {
                                 }
                             ]
                         },
-
                         options: {
                             maintainAspectRatio: false,
                             scales: {
                                 y: {
-                                    stacked: true,
-                                    grid: {
-                                        display: true,
-                                        color: "rgba(255,99,132,0.2)"
-                                    }
+                                    type: 'linear',
+                                    display: true,
+                                    position: 'left',
                                 },
                                 x: {
-                                    grid: {
-                                        display: false
-                                    }
+                                    display: true
                                 }
                             }
                         }
                     });
-
-
+                //     options: {
+                //         stacked: false,
+                //             maintainAspectRatio: false,
+                //             scales: {
+                //             y: {
+                //                 stacked: true,
+                //                     beginAtZero: true,
+                //                     grid: {
+                //                     display: true,
+                //                         color: "rgba(255,99,132,0.2)"
+                //                 }
+                //             },
+                //             x: {
+                //                 grid: {
+                //                     display: false
+                //                 }
+                //             }
+                //
+                //         }
+                //     }
+                    //
                 })
                 .catch((error) => {
                     console.error('Wystąpił błąd:', error);

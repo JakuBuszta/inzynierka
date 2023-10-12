@@ -20,12 +20,10 @@
 
 <script th:inline="javascript">
     var historicalData = [[${historicalData}]]
-    var historicalData2 = [[${coinHistoricalbitcoin}]]
-    var coinIds = [[${coinIds}]]
 </script>
 
 <div>
-    <canvas id="myChart"></canvas>
+    <canvas id="myChart" width="1400" height="300"></canvas>
 </div>
 
 
@@ -87,37 +85,21 @@
                 </td>
             </form>
 
-
-<!--        <td>-->
-<!--            <button th:attr="data-bs-target='#accordion_'+${crypto.getCoinId()}" data-bs-toggle="collapse" class="btn btn-link accordion-toggle">-->
-<!--                Wykres-->
-<!--            </button>-->
-<!--        </td>-->
-
-<!--        <tr>-->
-<!--            <td colspan="6" class="hiddenRow">-->
-<!--                <div class="accordion-body collapse" th:id="'#accordion_'+${crypto.getCoinId()}">-->
-<!--                    there is nothing to see here (yet)-->
-<!--                </div>-->
-<!--            </td>-->
-<!--        </tr>-->
-
             <td>
                 <button th:attr="data-bs-target='accordion-'+${crypto.getCoinId()}" data-bs-toggle="collapse" class="btn btn-link accordion-toggle">
-                    Wykres
+                    <i class="fa-solid fa-chart-line"></i>
                 </button>
             </td>
 
         <tr>
-            <td colspan="6" class="hiddenRow">
-                <div class="collapse" th:id="'accordion-'+${crypto.getCoinId()}">
-<!--                    there is nothing to see here (yet)-->
-
-                    <canvas th:id="|chart-${crypto.getCoinId()}|"></canvas>
+            <td colspan="7">
+                <div class="hiddenRow">
+                    <div class="collapse" th:id="'accordion-'+${crypto.getCoinId()}">
+                        <canvas th:id="|chart-${crypto.getCoinId()}|" width="1400" height="300"></canvas>
+                    </div>
                 </div>
             </td>
         </tr>
-
 
     </th:block>
 </table>
