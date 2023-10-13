@@ -1,4 +1,4 @@
-package com.example.cryptotracker.portfolio;
+package com.example.cryptotracker.portfolio.historical;
 
 import com.example.cryptotracker.user.User;
 import org.springframework.data.repository.CrudRepository;

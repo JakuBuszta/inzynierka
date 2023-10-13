@@ -18,7 +18,6 @@ public class UserService {
             requestUser.setCurrencySymbol(currencySymbol);
             userRepository.save(requestUser);
         } else {
-            System.out.println();
             session.setAttribute("currencySymbol", currencySymbol);
         }
 

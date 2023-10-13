@@ -1,5 +1,7 @@
 package com.example.cryptotracker.portfolio;
 
+import com.example.cryptotracker.portfolio.historical.CoinHistoricalData;
+import com.example.cryptotracker.portfolio.historical.CoinHistoricalDataRepository;
 import com.example.cryptotracker.security.SecurityUtilis;
 import com.example.cryptotracker.user.User;
 import lombok.RequiredArgsConstructor;

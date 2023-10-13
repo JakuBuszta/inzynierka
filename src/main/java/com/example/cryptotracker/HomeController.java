@@ -19,10 +19,8 @@ public class HomeController extends CommonController {
 
     @GetMapping("/")
     private String home(Model model){
-
         List<CoinMarkets> coinMarkets = apiCallScheduler.getCoinMarketsUSD();
         model.addAttribute("coinMarkets", coinMarkets);
-
         return "home";
     }
 

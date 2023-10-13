@@ -14,27 +14,8 @@ public class CommonController {
     private final ApiCallScheduler apiCallScheduler;
 
     @ModelAttribute(value = "totalMarketCapValue")
-    public BigDecimal setTotalMarketCapValue(HttpSession session) {
-        User userFromSecurityContext = SecurityUtilis.getUserFromSecurityContext();
-        if (userFromSecurityContext != null) {
-            if (userFromSecurityContext.getCurrencySymbol().equals("usd")) {
-                return apiCallScheduler.getTotalMarketCap("usd");
-            } else if (userFromSecurityContext.getCurrencySymbol().equals("pln")) {
-                return apiCallScheduler.getTotalMarketCap("pln");
-            }
-        }
-
-        String currencySymbol = (String) session.getAttribute("currencySymbol");
-
-        if (currencySymbol != null) {
-            if (currencySymbol.equals("usd")) {
-                return apiCallScheduler.getTotalMarketCap("usd");
-            } else {
-                return apiCallScheduler.getTotalMarketCap("pln");
-            }
-        }
-
-        return apiCallScheduler.getTotalMarketCap("usd");
+    public BigDecimal setTotalMarketCapValue() {
+        return apiCallScheduler.getTotalMarketCap();
     }
 
     @ModelAttribute(value = "currencySymbol")

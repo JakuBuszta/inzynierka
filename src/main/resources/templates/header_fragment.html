@@ -34,16 +34,13 @@
             <a class="nav-link active" aria-current="page" href="/portfolio">Portfolio</a>
           </div>
 
-          <div sec:authorize="isAuthenticated()">
-            <div class="nav-item dropdown d-flex">
-              <i style="font-size: 24px; margin-right: 10px;" class="fas">&#xf406;</i>
-              <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
-                 data-bs-toggle="dropdown" aria-expanded="false" sec:authentication="name">
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                <li><a th:href="@{/logout}" class="dropdown-item">Logout</a></li>
-              </ul>
-            </div>
+          <div sec:authorize="isAuthenticated()" class="nav-item dropdown d-flex">
+            <i style="font-size: 24px; margin-right: 10px;" class="fas fa-user"></i>
+            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${#authentication.name}">
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+              <li><a th:href="@{/logout}" class="dropdown-item">Logout</a></li>
+            </ul>
           </div>
 
           <div sec:authorize="isAnonymous()">
@@ -57,7 +54,6 @@
   </nav>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script th:src="@{/js/common.js}"></script>
-  <script src="https://kit.fontawesome.com/0cdd49373d.js" crossorigin="anonymous"></script>
   <script src="https://kit.fontawesome.com/0cdd49373d.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"

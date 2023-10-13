@@ -1,4 +1,4 @@
-package com.example.cryptotracker.portfolio;
+package com.example.cryptotracker.portfolio.transaction;
 
 import com.example.cryptotracker.user.User;
 import jakarta.persistence.*;
