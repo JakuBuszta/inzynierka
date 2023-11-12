@@ -32,7 +32,7 @@
             <div id="myUL" style="padding-left: 40px; padding-top: 10px">
               <tr th:each="crypto : ${listOfCrypto}">
                 <td><div>
-                  <form method="POST" th:action="@{/portfolio/add}"  th:object="${CoinMarkets}" >
+                  <form method="POST" th:action="@{/portfolio/transaction/add}"  th:object="${CoinMarkets}" >
                     <button class="btn btn-light">
                       <div>
                         <img th:src="${crypto.image}" alt="image" width=20 height="20"/>
