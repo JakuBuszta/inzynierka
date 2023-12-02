@@ -32,8 +32,7 @@
     </thead>
     <tr th:each="coin, status: ${coinMarkets}">
         <th sec:authorize="isAuthenticated()">
-            <i th:if="${!watchlist.contains(coin.getName())}" class="fa-regular fa-star" th:attr="onclick='addToWatchList(\'' + ${coin.getName()} + '\', this)'" style="cursor: pointer;"></i>
-            <i th:if="${watchlist.contains(coin.getName())}" class="fa-solid fa-star" th:attr="onclick='removeFromWatchList(\'' + ${coin.getName()} + '\', this)'" style="cursor: pointer;"></i>
+            <i class="fa-solid fa-star" th:attr="onclick='removeFromWatchList(\'' + ${coin.getName()} + '\', this)'" style="cursor: pointer;"></i>
         </th>
         <th th:text="${status.count}">1</th>
         <td>

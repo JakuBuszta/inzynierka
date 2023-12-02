@@ -5,7 +5,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -25,6 +25,9 @@ public class User implements UserDetails {
 
     @Column(length = 64, nullable = false)
     private String password;
+
+    @ElementCollection
+    private Set<String> watchListCoinIds = new HashSet<>();
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {

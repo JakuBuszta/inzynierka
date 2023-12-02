@@ -1,6 +1,8 @@
 package com.buszta.cryptotracker;
 
 import com.buszta.cryptotracker.common.CommonController;
+import com.buszta.cryptotracker.security.SecurityUtilis;
+import com.buszta.cryptotracker.user.User;
 import com.litesoftwares.coingecko.domain.Coins.CoinMarkets;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,12 @@ public class HomeController extends CommonController {
     @GetMapping("/")
     private String home(Model model){
         List<CoinMarkets> coinMarkets = apiCallScheduler.getCoinMarketsUSD();
+
+        User requestUser = SecurityUtilis.getUserFromSecurityContext();
+        if (requestUser != null){
+            model.addAttribute("watchlist", requestUser.getWatchListCoinIds());
+        }
+
         model.addAttribute("coinMarkets", coinMarkets);
         return "home";
     }

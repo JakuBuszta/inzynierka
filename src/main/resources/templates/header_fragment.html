@@ -31,12 +31,17 @@
         <form class="d-flex">
 
           <div sec:authorize="isAuthenticated()" style="padding-right: 20px">
+            <a><a  class="nav-link active" aria-current="page" th:href="@{/watchlist}">Watchlist</a></a>
+          </div>
+
+          <div sec:authorize="isAuthenticated()" style="padding-right: 20px">
             <a class="nav-link active" aria-current="page" href="/portfolio">Portfolio</a>
           </div>
 
           <div sec:authorize="isAuthenticated()" class="nav-item dropdown d-flex">
             <i style="font-size: 24px; margin-right: 10px;" class="fas fa-user"></i>
-            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${#authentication.name}">
+            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false" th:text="${#authentication.name}">
             </a>
             <ul class="dropdown-menu" aria-labelledby="profileDropdown">
               <li><a th:href="@{/logout}" class="dropdown-item">Logout</a></li>
