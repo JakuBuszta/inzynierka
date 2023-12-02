@@ -39,7 +39,6 @@ public class PortfolioController extends CommonController {
         model.addAttribute("listOfCrypto", apiCallScheduler.getCoinMarketsUSD());
 
         List<Coin> listOfCoins = transactionService.getListOfCoinsByCompressedTransaction(requestUser);
-        System.out.println(listOfCoins.toString());
         if (listOfCoins.isEmpty()) {
             return "portfolio/portfolio_empty";
         }

@@ -15,6 +15,7 @@ public class CoinHistoricalData {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @CreationTimestamp
     private LocalDate placedAt;
 
     @ManyToOne

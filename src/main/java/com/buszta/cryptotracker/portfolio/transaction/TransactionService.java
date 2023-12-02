@@ -69,8 +69,8 @@ public class TransactionService {
 
             if (coinMap.containsKey(coinId)) {
                 Coin coin = coinMap.get(coinId);
-                coin.setPricePaid((coin.getPricePaid() * coin.getQuantity() + transaction.getPrice() * transaction.getQuantity())
-                        / (coin.getQuantity() + transaction.getQuantity()));
+                coin.setPricePaid((coin.getPricePaid() * coin.getQuantity() + transaction.getPrice()
+                        * transaction.getQuantity()) / (coin.getQuantity() + transaction.getQuantity()));
                 coin.setQuantity(coin.getQuantity() + transaction.getQuantity());
             } else {
                 Coin newCoin = new Coin();
@@ -78,8 +78,6 @@ public class TransactionService {
                 newCoin.setQuantity(transaction.getQuantity());
                 newCoin.setPricePaid(transaction.getPrice());
                 newCoin.setImg(apiCallScheduler.getImg(coinId));
-                System.out.println("xXXXX: " + apiCallScheduler.getImg(coinId));
-                System.out.println("xXXXX: " + coinId);
                 coinMap.put(coinId, newCoin);
             }
         }

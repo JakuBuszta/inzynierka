@@ -38,7 +38,8 @@ public class ApiCallScheduler {
     private Double totalMarketCapUSD;
 
 
-    @Scheduled(fixedRate = 200000) //60000 - 1 min 5000 - 1 sec
+    //60000 - 1 min 5000 - 1 sec
+    @Scheduled(fixedRate = 200000)
     public void getMarketData() {
         coinMarketsUSD = client.getCoinMarkets(Currency.USD);
         totalMarketCapUSD = client.getGlobal().getData().getTotalMarketCap().get(Currency.USD);
