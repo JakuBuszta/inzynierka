@@ -69,8 +69,12 @@ public class TransactionService {
 
             if (coinMap.containsKey(coinId)) {
                 Coin coin = coinMap.get(coinId);
-                coin.setPricePaid((coin.getPricePaid() * coin.getQuantity() + transaction.getPrice()
-                        * transaction.getQuantity()) / (coin.getQuantity() + transaction.getQuantity()));
+                if (coin.getQuantity() + transaction.getQuantity() == 0 || coin.getQuantity() + transaction.getQuantity() == 0.0){
+                    coin.setPricePaid(0.0);
+                }else{
+                    coin.setPricePaid((coin.getPricePaid() * coin.getQuantity() + transaction.getPrice()
+                            * transaction.getQuantity()) / (coin.getQuantity() + transaction.getQuantity()));
+                }
                 coin.setQuantity(coin.getQuantity() + transaction.getQuantity());
             } else {
                 Coin newCoin = new Coin();
@@ -82,7 +86,16 @@ public class TransactionService {
             }
         }
 
-        return new ArrayList<>(coinMap.values());
+        List<Coin> listOfCoins = new ArrayList<>(coinMap.values());
+
+        for (int i = 0; i < listOfCoins.size(); i++) {
+            if (listOfCoins.get(i).getQuantity() == 0 || listOfCoins.get(i).getQuantity() == 0.0){
+                listOfCoins.remove(listOfCoins.get(i));
+            }
+        }
+
+
+        return listOfCoins;
     }
 
 
@@ -121,5 +134,18 @@ public class TransactionService {
         } else {
             historicalDataRepository.save(new HistoricalData(requestUser, totalValue, profitLoss));
         }
+    }
+
+    public double getUserCryptoQuantity(String coinName) {
+        User requestUser = SecurityUtilis.getUserFromSecurityContext();
+
+        List<Transaction> transactions = transactionRepository.findAllByUserAndCoinId(requestUser, coinName);
+
+        double quantity = 0;
+        for (Transaction transaction : transactions) {
+            quantity += transaction.getQuantity();
+        }
+
+        return quantity;
     }
 }

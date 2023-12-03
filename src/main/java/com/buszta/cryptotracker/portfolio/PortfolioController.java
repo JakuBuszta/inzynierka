@@ -39,6 +39,7 @@ public class PortfolioController extends CommonController {
         model.addAttribute("listOfCrypto", apiCallScheduler.getCoinMarketsUSD());
 
         List<Coin> listOfCoins = transactionService.getListOfCoinsByCompressedTransaction(requestUser);
+
         if (listOfCoins.isEmpty()) {
             return "portfolio/portfolio_empty";
         }
@@ -52,8 +53,11 @@ public class PortfolioController extends CommonController {
 
     @PostMapping("/portfolio/transaction/add")
     private String addTransaction(@ModelAttribute CoinMarkets coin, Model model) {
+        double selectedCryptoQuantity = transactionService.getUserCryptoQuantity(coin.getId());
         BigDecimal currentPriceOfClickedCrypto = apiCallScheduler.getPrice(coin.getId());
+
         model.addAttribute("crypto", coin);
+        model.addAttribute("cryptoQuantity", selectedCryptoQuantity);
         model.addAttribute("currentPriceOfClickedCrypto", currentPriceOfClickedCrypto);
         return "transaction";
     }

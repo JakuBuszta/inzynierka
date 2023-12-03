@@ -10,4 +10,6 @@ import java.util.List;
 public interface TransactionRepository extends CrudRepository<Transaction, Integer> {
 
     List<Transaction> findAllByUser(User user);
+
+    List<Transaction> findAllByUserAndCoinId(User user, String coinId);
 }

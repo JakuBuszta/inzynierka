@@ -22,27 +22,74 @@
         <a th:text="${crypto.symbol}" style="font-size: smaller;"> Symbol </a>
     </div>
 
-    <form method="POST" th:action="@{/portfolio/transaction}"  th:object="${Transaction}" >
-        <div>
-            <label for="quantity">Quantity: </label>
-            <input class="inputTransaction" type="text" name="quantity" id="quantity" onkeyup="myFunction()" required="required" pattern="^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)$" /><br/>
+    <form method="POST" id="transactionForm" th:action="@{/portfolio/transaction}" th:object="${Transaction}">
+        <div class="mb-3" style="padding-top: 10px">
+            <div class="row">
+                <div>
+                    <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" value="Buy" checked onclick="viewMaxButton()">
+                    <label class="btn btn-outline-success" for="success-outlined">Buy</label>
 
-            <label for="price" >Price for coin:  </label>
-            <span class="input-prefix" th:text="${currencySymbol}"></span>
-            <input class="inputTransaction" type="text" name="price" id="price" onkeyup="myFunction()" th:value="${currentPriceOfClickedCrypto}" required="required" pattern="^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)$"/><br/>
+                    <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" value="Sell" autocomplete="off" onclick="viewMaxButton()">
+                    <label class="btn btn-outline-danger" for="danger-outlined">Sell</label>
+                </div>
+            </div>
+            <div>
+                <label for="quantity" class="col-form-label">Quantity: </label>
+                <input class="inputTransaction" type="text" name="quantity" id="quantity" onkeyup="myFunction()" required="required" pattern="^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)$"/>
+                <a id="maxButton" onclick="SetQuantityToMax()" style="cursor: pointer; color:Blue; display: none">Max</a>
+            </div>
+
+            <div>
+                <label for="price" class="col-form-label">Price for coin: </label>
+                <span class="input-prefix" th:text="${currencySymbol}"></span>
+                <input class="inputTransaction" type="text" name="price" id="price" onkeyup="myFunction()" th:value="${currentPriceOfClickedCrypto}" required="required" pattern="^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)$"/>
+            </div>
             <div>
                 <h5 class="cryptoInfo" id="totalSpent">$0</h5>
             </div>
-            <input class="homePageContainerButton" type="submit" value="Submit" />
-            <input hidden name="coinId" th:value="${crypto.id}">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Submit button and hidden input -->
+                    <input class="btn btn-primary" type="button" value="Submit" onclick="submitForm()"/>
+                    <input hidden name="coinId" id="coinId" th:value="${crypto.id}">
+                </div>
+            </div>
         </div>
     </form>
+
+    <script>
+        function submitForm() {
+            var transactionType = document.querySelector('input[name="options-outlined"]:checked').value;
+            var quantityInput = document.getElementById('quantity');
+
+            if (transactionType === "Sell") {
+                var currentQuantity = parseFloat(quantityInput.value);
+                if (!isNaN(currentQuantity)) {
+                    quantityInput.value = (-1 * currentQuantity).toString();
+                }
+            }
+
+            document.getElementById('transactionForm').submit();
+        }
+
+        function viewMaxButton() {
+            var transactionType = document.querySelector('input[name="options-outlined"]:checked').value;
+            var maxButton = document.getElementById('maxButton');
+
+            maxButton.style.display = transactionType === "Sell" ? 'inline-block' : 'none';
+        }
+
+        function SetQuantityToMax(){
+            document.getElementById('quantity').value = "[[${cryptoQuantity}]]";
+        }
+    </script>
 
     <script>
         function myFunction() {
             var price = document.getElementById("price").value;
             var quantity = document.getElementById("quantity").value;
-            var total = (price*quantity).toFixed(2);
+            var total = (price * quantity).toFixed(2);
             document.getElementById("totalSpent").innerHTML = "[[${currencySymbol}]]" + " " + total;
         }
     </script>

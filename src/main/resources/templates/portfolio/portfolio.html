@@ -74,18 +74,41 @@
                 </div>
             </td>
 
+            <td class="deleteButton">
+                <button style="color: red; background: none; border: none; padding: 0; font-size: 20px;" th:attr="onclick='openDeleteModal(\'' + ${crypto.coinId} + '\')'"
+                        class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </td>
+
+
             <form method="POST" th:action="@{/portfolio/transaction/delete}" id="deleteForm" th:object="${String}">
-                <td class="deleteButton">
-                    <button type="submit"
-                            style="color: red; background: none; border: none; padding: 0; font-size: 20px;">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                    <input hidden style="display: none !important;" name="deleteCryptoId" th:value="${crypto.coinId}"/>
-                </td>
+                <input hidden style="display: none !important;" name="deleteCryptoId" id="deleteCryptoId" th:value="${crypto.coinId}"/>
             </form>
 
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Remove cryptocurrency</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            All transactions of selected coin will be removed.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" onclick="submitRemoveForm()">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <td>
-                <button th:attr="data-bs-target='accordion-'+${crypto.getCoinId()}" data-bs-toggle="collapse" class="btn btn-link accordion-toggle">
+                <button th:attr="data-bs-target='accordion-'+${crypto.getCoinId()}" data-bs-toggle="collapse"
+                        class="btn btn-link accordion-toggle">
                     <i class="fa-solid fa-chart-line"></i>
                 </button>
             </td>
@@ -145,6 +168,21 @@
 </table>
 
 <div th:replace="portfolio/add_crypto_modal :: modal"></div>
+
+<script>
+    function submitRemoveForm() {
+        var coinId = $('#deleteModal').data('coinId');
+
+        document.getElementById('deleteCryptoId').value = coinId;
+
+        document.getElementById('deleteForm').submit();
+    }
+
+    function openDeleteModal(coinId) {
+        $('#deleteModal').data('coinId', coinId);
+        $('#deleteModal').modal('show');
+    }
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:src="@{/js/chartjs-custom.js}"></script>
