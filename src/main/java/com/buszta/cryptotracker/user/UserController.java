@@ -21,6 +21,9 @@ public class UserController extends CommonController {
     @GetMapping("/watchlist")
     private String getWatchlist(Model model){
         List<CoinMarkets> coinsInWatchList = userService.getCoinsInWatchList();
+        if (coinsInWatchList.isEmpty()){
+            return "watchlist_empty";
+        }
 
         model.addAttribute("coinMarkets", coinsInWatchList);
         return "watchlist";
