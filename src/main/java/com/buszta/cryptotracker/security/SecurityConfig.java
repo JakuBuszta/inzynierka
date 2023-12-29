@@ -42,7 +42,6 @@ class SecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable());
 
-
         http
                 .authorizeRequests((requests) -> requests
                         .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
@@ -54,6 +53,7 @@ class SecurityConfig implements WebMvcConfigurer {
 
                         .requestMatchers(new AntPathRequestMatcher("/portfolio/**")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/transaction/**")).authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/watchlist/**")).authenticated()
                 )
 
                 .formLogin((form) -> form

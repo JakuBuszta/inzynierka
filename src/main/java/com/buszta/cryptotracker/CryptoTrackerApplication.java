@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Random;
 
 @SpringBootApplication
@@ -49,7 +50,7 @@ public class CryptoTrackerApplication {
 //    @Bean
 //    CommandLineRunner commandLineRunner(UserRepository userRepository, HistoricalDataRepository historicalDataRepository, TransactionRepository transactionRepository, CoinHistoricalDataRepository coinHistoricalDataRepository, PasswordEncoder passwordEncoder) {
 //        return args -> {
-//            User user = new User(1, "buszta-jakub@wp.pl", passwordEncoder.encode("123"));
+//            User user = new User(1, "buszta-jakub@wp.pl", passwordEncoder.encode("123"), new HashSet<>());
 //            userRepository.save(user);
 //            double [] sumValue = {61733, 64106, 63967, 64446, 66387, 67126, 66897};
 //

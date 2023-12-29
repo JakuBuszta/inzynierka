@@ -37,8 +37,6 @@ public class ApiCallScheduler {
     private ExchangeById bingx = new ExchangeById();
     private Double totalMarketCapUSD;
 
-
-    //60000 - 1 min 5000 - 1 sec
     @Scheduled(fixedRate = 200000)
     public void getMarketData() {
         coinMarketsUSD = client.getCoinMarkets(Currency.USD);
@@ -76,7 +74,7 @@ public class ApiCallScheduler {
         return exchangeList;
     }
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(cron = "0 0 22 * * *")
     @Transactional
     public void saveHistoricalData() {
         Iterable<User> users = userRepository.findAll();
